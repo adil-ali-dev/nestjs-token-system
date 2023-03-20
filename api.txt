@@ -1,0 +1,126 @@
+
+1. The data of the customer is stored in the customer table, which includes "name" and "tokens" fields (Token is initially 0).
+
+- POST: "{{APP_URL}}/customer"
+- BODY:{
+  "name": "DEMO 1",
+  "tokens": 0
+  }
+
+- RESPONSE: {
+  "name": "DEMO 1",
+  "tokens": 0,
+  "isDeleted": false,
+  "id": "879f53b7-88c5-470b-ba95-19f8bafe56c9",
+  "created_at": "2023-03-20T11:02:38.282Z",
+  "updated_at": "2023-03-20T11:02:38.282Z"
+  }
+
+2. All the customers
+
+- GET: "{{APP_URL}}/customer" request.
+- RESPONSE: [{
+  "id": "40f3a754-61d3-4335-aef1-ea69f1829ac9",
+  "name": "DEMO 1",
+  "tokens": 0,
+  "isDeleted": false,
+  "created_at": "2023-03-19T17:42:51.391Z",
+  "updated_at": "2023-03-19T17:42:51.391Z"
+  },
+  {
+  "id": "879f53b7-88c5-470b-ba95-19f8bafe56c9",
+  "name": "DEMO 2",
+  "tokens": 0,
+  "isDeleted": false,
+  "created_at": "2023-03-20T11:02:38.282Z",
+  "updated_at": "2023-03-20T11:02:38.282Z"
+  }
+  ]
+
+3. Create a Request and store data into the request table.
+
+- POST: "{{APP_URL}}/request"
+- BODY: {
+  "type": "DEMO REQUEST 1",
+  "price_in_token": 21
+  }
+- RESPONSE: {
+  "type": "DEMO REQUEST 1",
+  "price_in_token": 21,
+  "isDeleted": false,
+  "id": "ba127fb5-119c-4d86-9db5-0b130c747158",
+  "created_at": "2023-03-20T11:31:13.472Z",
+  "updated_at": "2023-03-20T11:31:13.472Z"
+  }
+
+4. Fetching all the created requests via this api.
+
+- GET: "{{APP_URL}}/request
+- RESPONSE: [
+  {
+  "id": "e4489878-5ee7-484b-a2aa-a5b63827db2e",
+  "type": "MAPS SDK",
+  "price_in_token": 10,
+  "isDeleted": false,
+  "created_at": "2023-03-17T08:31:53.986Z",
+  "updated_at": "2023-03-17T08:31:53.986Z"
+  },
+  {
+  "id": "74a27245-51cc-4bec-802c-fa85b1269d09",
+  "type": "STATIC IMAGES",
+  "price_in_token": 14,
+  "isDeleted": false,
+  "created_at": "2023-03-17T08:32:47.766Z",
+  "updated_at": "2023-03-17T08:32:47.766Z"
+  },
+  ]
+
+5. Purchase Tokens
+   A customer can purchase tokens, and the record is stored in the "token-purchase-history" table.
+   The request body contains "customerId" and "tokensRequested".
+
+- POST "{{APP_URL}}/customer/purchase-tokens"
+- BODY {
+  "customerId": "38997ca2-f080-4823-a11a-4d4f0180029f",
+  "tokensRequested": 21
+  }
+- RESPONSE {
+  "tokens_purchased": 21,
+  "isDeleted": false,
+  "customer": "38997ca2-f080-4823-a11a-4d4f0180029f",
+  "id": "f99e2f98-0532-4b27-96cc-667c83690876",
+  "created_at": "2023-03-20T11:07:44.815Z",
+  "updated_at": "2023-03-20T11:07:44.815Z"
+  }
+
+6.  When a customer requests a specific resource (which is stored in the request model) and pays the respective price in tokens, the body contains customerId as "customer" and requestId as "request". The data is stored in the "usage-history" table.
+
+- POST "{{APP_URL}}/customer/spends-tokens"
+- BODY {
+  "customer": "38997ca2-f080-4823-a11a-4d4f0180029f",
+  "request": "e4489878-5ee7-484b-a2aa-a5b63827db2e"
+  }
+
+- RESPONSE: {
+  "status": 201,
+  "message": "Transaction has been completed successfully"
+  }
+
+7. All purchase history records are retrieved using.
+
+- GET "{{APP_URL}}/token-purchase-history"
+- RESPONSE: [
+  {
+  "id": "98801ea2-15bb-4e73-ac92-8d8dc738f4c9",
+  "tokens_purchased": 10,
+  "created_at": "2023-03-17T08:17:26.317Z",
+  "isDeleted": false,
+  "updated_at": "2023-03-17T08:17:26.317Z"
+  },
+  {
+  "id": "86ba7854-3d58-4840-bf5c-d526837e53b0",
+  "tokens_purchased": 13,
+  "created_at": "2023-03-17T08:17:35.537Z",
+  "isDeleted": false,
+  "updated_at": "2023-03-17T08:17:35.537Z"
+  }]
